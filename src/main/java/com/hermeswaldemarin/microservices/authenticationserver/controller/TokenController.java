@@ -84,12 +84,7 @@ public class TokenController {
     @RequestMapping(method = RequestMethod.POST, value = "/user-create")
     public ResponseEntity<String> postMessage(@RequestBody User user) {
 
-        try {
-            userService.createUser(user);
-        } catch (MessagingException e) {
-            log.error("Error creating user", e);
-            return new ResponseEntity<>("Error creating user: ", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        userService.createUser(user);
 
         return new ResponseEntity<>("OK", HttpStatus.CREATED);
     }
