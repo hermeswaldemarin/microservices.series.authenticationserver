@@ -2,7 +2,6 @@ package com.hermeswaldemarin.microservices.authenticationserver.config;
 
 import com.hermeswaldemarin.microservices.authenticationserver.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -33,10 +32,8 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
         super();
     }
 
-    @Bean
-    public UserService userService(){
-        return new UserService(userDetailsService, restTemplate);
-    }
+    @Autowired
+    public UserService userService;
 
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) {
@@ -48,7 +45,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
             String externalProvider = (String)details.get("externalprovider");
 
             try {
-                userService().checkExternalProviderCredentials(externalProvider, externalToken , ((CustomUserDetails)userDetails).getExternalid());
+                this.userService.checkExternalProviderCredentials(externalProvider, externalToken , ((CustomUserDetails)userDetails).getExternalid());
             } catch (NoSuchProviderException e) {
                 throw new BadCredentialsException(this.messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
             }

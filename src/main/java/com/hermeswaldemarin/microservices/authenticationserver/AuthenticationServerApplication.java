@@ -8,7 +8,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication(scanBasePackages = {"com.hermeswaldemarin.microservices.authenticationserver"})
-@ComponentScan
 @EnableWebMvc
 public class AuthenticationServerApplication {
 

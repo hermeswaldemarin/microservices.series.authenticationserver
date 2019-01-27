@@ -135,21 +135,32 @@ create table if not exists  mailtoken (
     foreign key (username) references users (username)
 ) engine = InnoDb;
 
-create table if not exists groups (
-    id bigint unsigned not null auto_increment primary key,
-    group_name varchar(50) not null
-) engine = InnoDb;
+create table if not exists `groups` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `group_name` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`));
 
-create table if not exists group_authorities (
-    group_id bigint unsigned not null,
-    authority varchar(50) not null,
-    foreign key (group_id) references groups (id)
-) engine = InnoDb;
 
-create table if not exists group_members (
-    id bigint unsigned not null auto_increment primary key,
-    username varchar(50) not null,
-    group_id bigint unsigned not null,
-    foreign key (group_id) references groups (id)
-) engine = InnoDb;
+create table if not exists `group_authorities` (
+  `group_id` INT UNSIGNED NOT NULL,
+  `authority` VARCHAR(50) NOT NULL,
+  INDEX `fk_groups_idx` (`group_id` ASC) VISIBLE,
+  CONSTRAINT `fk_groups`
+    FOREIGN KEY (`group_id`)
+    REFERENCES `groups` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+create table if not exists  `group_members` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(50) NOT NULL,
+  `group_id` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_groupmembers_group`
+    FOREIGN KEY (`group_id`)
+    REFERENCES `groups` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
 
